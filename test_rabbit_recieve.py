@@ -39,6 +39,7 @@ if __name__ == '__main__':
 
 # ubuntu:  sudo rabbitmq-plugins enable rabbitmq_management
 #          sudo service rabbitmq-server restart
+
 # http://localhost:15672/
 
 # шаги: 1. запускайте в терминале этот файл recieve  
