@@ -33,6 +33,14 @@ if __name__ == '__main__':
             
 #РАБОТАЕТ!! ахахах(прикол, если бы нет, ведь это дока)
 
+# windows: rabbitmq-plugins enable rabbitmq_management
+        #  rabbitmq-service.bat stop
+        #  rabbitmq-service.bat start
+
+# ubuntu:  sudo rabbitmq-plugins enable rabbitmq_management
+#          sudo service rabbitmq-server restart
+# http://localhost:15672/
+
 # шаги: 1. запускайте в терминале этот файл recieve  
 #       2. во втором терминале запускайте sent и смотрите терминал первого, там должно быть так: 
 # nadya@DESKTOP-7I28LQI:~/PI/mobile-payment-terminals$ python3 test_rabbit_recieve.py 
