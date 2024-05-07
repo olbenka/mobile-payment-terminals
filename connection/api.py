@@ -7,7 +7,7 @@
 
 # async def start_consumer():
 #     await asyncio.create_subprocess_exec(
-#         "python3", "consumer.py",
+#         "python3", "producer.py",
 #         cwd="/home/nadya/PI/mobile-payment-terminals/connection/", stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
 #     )
 

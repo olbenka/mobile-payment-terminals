@@ -1,4 +1,4 @@
-# #control_imput/consumer.py
+# #control_imput/producer.py
 # import aio_pika
 
 # async def consume_keyboard_input(connection):
@@ -37,3 +37,25 @@ async def consume_battery_status(connection):
             async for message in queue_consumption:
                 async with message.process():
                     print("Control Input received battery status:", message.body.decode())
+
+async def consume_card_reader(connection):
+    async with connection:
+        channel = await connection.channel()
+
+        battery_status_queue = await channel.declare_queue("card_messages", auto_delete=True)
+
+        async with aio_pika.QueueConsumption(channel, battery_status_queue) as queue_consumption:
+            async for message in queue_consumption:
+                async with message.process():
+                    print("Control Input received card-reader data:", message.body.decode())
+
+async def consume_nfc(connection):
+    async with connection:
+        channel = await connection.channel()
+
+        battery_status_queue = await channel.declare_queue("nfc_messages", auto_delete=True)
+
+        async with aio_pika.QueueConsumption(channel, battery_status_queue) as queue_consumption:
+            async for message in queue_consumption:
+                async with message.process():
+                    print("Control Input received nfc data:", message.body.decode())

@@ -44,7 +44,7 @@
 
 # if __name__ == "__main__":
 #     asyncio.run(main())
-# central/consumer.py
+# central/producer.py
 #РАБОЧЕЕ
 # import asyncio
 # import aio_pika

@@ -1,25 +1,23 @@
-# connection/producer.py
-
-import asyncio
 import aio_pika
-
-async def consume_messages(connection):
+import asyncio
+# тут мы должны получить данные из некоторого входа для карты (из virtual_card_data)
+async def consume_nfc_input(connection):
     async with connection:
         channel = await connection.channel()
 
-        queue_name = "central_messages"  # Используем тот же маршрутный ключ, что и в центральном сервисе
+        queue_name = "nfc_queue" # прием данных из вне!! из virtual_card_data
         queue = await channel.declare_queue(queue_name, auto_delete=True)
 
         async with queue.iterator() as queue_iter:
             async for message in queue_iter:
                 async with message.process():
-                    print("Connection received:", message.body.decode())
+                    print("NFC received data from Input:", message.body.decode())
 
 async def main():
     connection = await aio_pika.connect_robust(
         "amqp://guest:guest@127.0.0.1/",
     )
-    await consume_messages(connection)
+    await consume_nfc_input(connection)
 
 if __name__ == "__main__":
     asyncio.run(main())
