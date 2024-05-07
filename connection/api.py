@@ -28,16 +28,16 @@
 
 import asyncio
 import aio_pika
-from .producer import send_message
-from .consumer import consume_messages
+from producer import send_message
+from consumer import consume_messages
 
 async def main():
     connection = await aio_pika.connect_robust(
         "amqp://guest:guest@127.0.0.1/",
     )
-    #await consume_messages(connection)
+    await consume_messages(connection)
     # await asyncio.sleep(200)
-    await send_message("Hello from connection producer!", "central_messages")
+    # await send_message("Hello from connection producer!", "connection_to_central")
 
 if __name__ == "__main__":
     asyncio.run(main())

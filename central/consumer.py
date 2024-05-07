@@ -46,20 +46,20 @@
 #     asyncio.run(main())
 # central/producer.py
 #РАБОЧЕЕ
-# import asyncio
-# import aio_pika
+import asyncio
+import aio_pika
 
-# async def consume_messages(connection):
-#     async with connection:
-#         channel = await connection.channel()
+async def consume_messages(connection, routing_key1):
+    async with connection:
+        channel = await connection.channel()
 
-#         queue_name = "connection_messages"  # Имя очереди, на которую подписывается центральный сервис
-#         queue = await channel.declare_queue(queue_name, auto_delete=True)
+        queue_name = routing_key1  # Имя очереди, на которую подписывается центральный сервис
+        queue = await channel.declare_queue(queue_name, auto_delete=True)
 
-#         async with queue.iterator() as queue_iter:
-#             async for message in queue_iter:
-#                 async with message.process():
-#                     print("Central received:", message.body.decode())
+        async with queue.iterator() as queue_iter:
+            async for message in queue_iter:
+                async with message.process():
+                    print("Central received:", message.body.decode())
 
 # async def main():
 #     connection = await aio_pika.connect_robust(
@@ -70,26 +70,26 @@
 # if __name__ == "__main__":
 #     asyncio.run(main())
 #РАБОЧЕЕ
-import aio_pika
-import asyncio
+# import aio_pika
+# import asyncio
 
-async def consume_control_input_data(connection):
-    async with connection:
-        channel = await connection.channel()
+# async def consume_control_input_data(connection):
+#     async with connection:
+#         channel = await connection.channel()
 
-        queue_name = "control_input_queue"
-        queue = await channel.declare_queue(queue_name, auto_delete=True)
+#         queue_name = "control_input_queue"
+#         queue = await channel.declare_queue(queue_name, auto_delete=True)
 
-        async with queue.iterator() as queue_iter:
-            async for message in queue_iter:
-                async with message.process():
-                    print("Central received data from Control Input:", message.body.decode())
+#         async with queue.iterator() as queue_iter:
+#             async for message in queue_iter:
+#                 async with message.process():
+#                     print("Central received data from Control Input:", message.body.decode())
 
-async def main():
-    connection = await aio_pika.connect_robust(
-        "amqp://guest:guest@127.0.0.1/",
-    )
-    await consume_control_input_data(connection)
+# async def main():
+#     connection = await aio_pika.connect_robust(
+#         "amqp://guest:guest@127.0.0.1/",
+#     )
+#     await consume_control_input_data(connection)
 
-if __name__ == "__main__":
-    asyncio.run(main())
+# if __name__ == "__main__":
+#     asyncio.run(main())

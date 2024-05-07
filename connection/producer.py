@@ -17,10 +17,10 @@ async def send_message(message, routing_key):
         )
         print(f"Message sent: {message}")
 
-async def main():
-    message = "Hello from connection producer!"
-    routing_key = "connection_messages"
-    await send_message(message, routing_key)
+# async def main():
+#     message = "Hello from connection producer!"
+#     routing_key = "connection_messages"
+#     await send_message(message, routing_key)
 
-if __name__ == "__main__":
-    asyncio.run(main())
+# if __name__ == "__main__":
+#     asyncio.run(main())

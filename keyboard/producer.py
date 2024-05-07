@@ -4,10 +4,11 @@ import aio_pika
 async def send_keyboard_input(connection):
     async with connection:
         channel = await connection.channel()
+        message = "Hello from keyboard"
 
-        routing_key = "keyboard_input_queue"
+        routing_key1 = "keyboard_to_control"
         await channel.default_exchange.publish(
-            aio_pika.Message(body=b"Keyboard input data"),
-            routing_key=routing_key
+            aio_pika.Message(body=message.encode()),
+            routing_key=routing_key1
         )
-        print("Keyboard input sent.")
+        print(f"LOCAL_LOG: Keyboard input sent: {message}")
