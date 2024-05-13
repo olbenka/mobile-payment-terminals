@@ -1,22 +1,22 @@
 # central/api.py
 
-import asyncio
-import aio_pika
-from producer import send_message
-from consumer import consume_messages
+# import asyncio
+# import aio_pika
+# from producer import send_message
+# from consumer import consume_messages
 
-async def main():
-    connection = await aio_pika.connect_robust(
-        "amqp://guest:guest@127.0.0.1/",
-    )
-    routing = "central_to_connection"
-    # await send_message("Hello from central producer!", routing)
-    # await asyncio.sleep(10)
-    routing_key = "control_to_central"
-    await consume_messages(connection, routing_key)
+# async def main():
+#     connection = await aio_pika.connect_robust(
+#         "amqp://guest:guest@127.0.0.1/",
+#     )
+#     routing = "central_to_connection"
+#     # await send_message("Hello from central producer!", routing)
+#     # await asyncio.sleep(10)
+#     routing_key = "control_to_central"
+#     await consume_messages(connection, routing_key)
 
-if __name__ == "__main__":
-    asyncio.run(main())
+# if __name__ == "__main__":
+#     asyncio.run(main())
 
 
 # import asyncio
@@ -47,3 +47,20 @@ if __name__ == "__main__":
 
 # if __name__ == "__main__":
 #     asyncio.run(main())
+
+
+
+# test
+import asyncio
+import aio_pika
+from ..monitor.api import send_message
+from producer import send_message_secure
+from consumer import consume_messages_secure
+
+async def main():
+    connection = await aio_pika.connect_robust("amqp://guest:guest@127.0.0.1/")
+    await consume_messages_secure(connection)
+    await send_message_secure("Hello from central producer!", "central_to_connection")
+
+if __name__ == "__main__":
+    asyncio.run(main())

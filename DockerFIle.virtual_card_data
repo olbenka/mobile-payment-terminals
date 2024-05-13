@@ -1,0 +1,23 @@
+# Устанавливаем базовый образ Python
+FROM python:3.9-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1
+
+ENV PYTHONUNBUFFERED=1
+
+# Устанавливаем зависимости
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Копируем файлы приложения
+COPY virtual_card_data /virtual_card_data
+
+RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /virtual_card_data
+USER appuser
+
+# Устанавливаем рабочую директорию
+WORKDIR /virtual_card_data
+
+# Команда для запуска приложения
+CMD ["python", "api.py"]
+

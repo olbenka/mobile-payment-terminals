@@ -44,22 +44,22 @@
 
 # if __name__ == "__main__":
 #     asyncio.run(main())
-# central/producer.py
-#РАБОЧЕЕ
-import asyncio
-import aio_pika
+# # central/producer.py
+# #РАБОЧЕЕ
+# import asyncio
+# import aio_pika
 
-async def consume_messages(connection, routing_key1):
-    async with connection:
-        channel = await connection.channel()
+# async def consume_messages(connection, routing_key1):
+#     async with connection:
+#         channel = await connection.channel()
 
-        queue_name = routing_key1  # Имя очереди, на которую подписывается центральный сервис
-        queue = await channel.declare_queue(queue_name, auto_delete=True)
+#         queue_name = routing_key1  # Имя очереди, на которую подписывается центральный сервис
+#         queue = await channel.declare_queue(queue_name, auto_delete=True)
 
-        async with queue.iterator() as queue_iter:
-            async for message in queue_iter:
-                async with message.process():
-                    print("Central received:", message.body.decode())
+#         async with queue.iterator() as queue_iter:
+#             async for message in queue_iter:
+#                 async with message.process():
+#                     print("Central received:", message.body.decode())
 
 # async def main():
 #     connection = await aio_pika.connect_robust(
@@ -93,3 +93,28 @@ async def consume_messages(connection, routing_key1):
 
 # if __name__ == "__main__":
 #     asyncio.run(main())
+
+
+import aio_pika
+from json import loads
+
+from monitor import check_operation
+from monitor import send_message
+
+
+async def consume_messages_secure(connection):
+    async with connection:
+        channel = await connection.channel()
+
+        queue_name = "security_monitor_queue"
+        queue = await channel.declare_queue(queue_name, auto_delete=True)
+
+        async with queue.iterator() as queue_iter:
+            async for message in queue_iter:
+                async with message.process():
+                    payload = loads(message.body.decode())
+                    if check_operation(payload['source'], payload['destination'], payload['operation']):
+                        print("Authorized message received:", payload)
+                        await send_message(payload, f"{payload['source']}_to_{payload['destination']}")
+                    else:
+                        print("Unauthorized message received:", payload)
