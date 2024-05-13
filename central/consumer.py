@@ -98,7 +98,7 @@
 import aio_pika
 from json import loads
 
-from monitor import check_operation
+from monitor.policies import check_operation
 from monitor import send_message
 
 
