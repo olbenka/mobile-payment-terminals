@@ -1,15 +1,30 @@
-POST http://localhost:6000/ingest HTTP/1.1
-content-type: application/json
+### Ввод суммы с клавиатуры (keyboard -> control_input)
 
-[
-    {
-        "param_name": "current",
-        "param_units": "A",
-        "param_value": 80
-    },
-    {
-        "param_name": "temperature",
-        "param_units": "C",
-        "param_value": 190
-    }
-]
+POST http://localhost:6003/keyboard_data HTTP/1.1
+Content-Type: application/json
+
+{
+    "amount": 100
+}
+
+### Авторизация покупки (control_input -> central)
+
+POST http://localhost:6000/input_data HTTP/1.1
+Content-Type: application/json
+
+{
+    "amount": 100
+}
+
+### Центральный сервис обрабатывает запрос (central -> screen)
+
+POST http://localhost:6002/authorize_purchase HTTP/1.1
+Content-Type: application/json
+
+{
+    "amount": 100
+}
+
+### Демонстрация получения сообщения на screen 
+
+GET http://localhost:6004/ HTTP/1.1

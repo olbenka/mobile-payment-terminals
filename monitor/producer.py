@@ -1,17 +1,15 @@
-from aio_pika import connect_robust, Message
-from asyncio import get_event_loop
-from json import dumps
+import pika
+import json
 
-async def produce():
-    try:
-        connection = await connect_robust("amqp://guest:guest@localhost/")
-        async with connection.channel() as channel:
-            queue = await channel.declare_queue("security_monitor_queue", durable=True)
-            message = {"source": "central", "destination": "printer", "operation": "print_document", "payload": "Base64EncodedPayload"}
-            await queue.publish(Message(body=dumps(message).encode()))
-            print("Message produced successfully.")
-    except Exception as e:
-        print(f"Error producing message: {e}")
+# Настройки RabbitMQ
+HOST = '127.0.0.1'
+QUEUE_NAME = 'security_monitor_queue'
 
-if __name__ == "__main__":
-    get_event_loop().run_until_complete(produce())
+def send_message(message):
+    connection = pika.BlockingConnection(pika.ConnectionParameters(HOST))
+    channel = connection.channel()
+
+    # Отправка сообщения в очередь монитора безопасности
+    channel.basic_publish(exchange='', routing_key=QUEUE_NAME, body=json.dumps(message))
+
+    connection.close()

@@ -61,15 +61,40 @@
 
 # import aio_pika
 
+import pika
+import json
+from producer import send_message
 
-async def consume_messages(connection, routing_key1):
-    async with connection:
-        channel = await connection.channel()
-        queue_name = routing_key1  
-        queue = await channel.declare_queue(queue_name, auto_delete=True)
-        async with queue.iterator() as queue_iter:
-            # print(queue_iter)
-            async for message in queue_iter:
-                # print('here')
-                async with message.process():
-                    print("Control received:", message.body.decode())
+HOST = '127.0.0.1'
+QUEUE_NAME = 'control_input_queue'
+
+def on_message(ch, method, properties, body):
+    message = json.loads(body.decode())
+    message_id = message.get('id')
+    details = message.get('details')
+
+    print(f'[info] Control Input received message {message_id}: {details}')
+
+    # Отправляем сообщение в central
+    message = {
+        'id': 'control_input_data',
+        'details': {
+            'source': 'control_input',
+            'deliver_to': 'central',
+            'operation': 'send_keyboard_input',
+            'amount': details.get('amount')
+        }
+    }
+    send_message('central_queue', message)
+
+def main():
+    connection = pika.BlockingConnection(pika.ConnectionParameters(HOST))
+    channel = connection.channel()
+
+    channel.basic_consume(queue=QUEUE_NAME, on_message_callback=on_message, auto_ack=True)
+
+    print('Control Input is listening...')
+    channel.start_consuming()
+
+if __name__ == '__main__':
+    main()

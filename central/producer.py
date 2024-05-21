@@ -66,14 +66,28 @@
 
 
 
-from monitor.api import send_message
+# from monitor.api import send_message
 
 
-async def send_message_secure(message, routing_key):
-    payload = {
-        "source": "central",
-        "destination": routing_key.split("_")[0],
-        "operation": "send_message",
-        "message": message
-    }
-    await send_message(payload, "security_monitor")
+# async def send_message_secure(message, routing_key):
+#     payload = {
+#         "source": "central",
+#         "destination": routing_key.split("_")[0],
+#         "operation": "send_message",
+#         "message": message
+#     }
+#     await send_message(payload, "security_monitor")
+
+import pika
+import json
+
+HOST = '127.0.0.1'
+
+def send_message(routing_key, message):
+    connection = pika.BlockingConnection(pika.ConnectionParameters(HOST))
+    channel = connection.channel()
+
+    # Отправка сообщения в очередь микросервиса
+    channel.basic_publish(exchange='', routing_key=routing_key, body=json.dumps(message))
+
+    connection.close()

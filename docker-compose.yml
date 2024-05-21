@@ -1,92 +1,163 @@
-version: '3.4'
+# version: '3.4'
+
+# services:
+#   rabbitmq:
+#     image: rabbitmq:management
+#     container_name: rabbitmq
+#     ports:
+#       - "5672:5672"  # RabbitMQ port
+#       - "15672:15672"  # RabbitMQ management UI port
+
+#   connection:
+#     image: connection
+#     build:
+#       context: .
+#       dockerfile: ./DockerFile.connection
+#     depends_on:
+#       - rabbitmq
+
+#   central:
+#     image: central
+#     build:
+#       context: .
+#       dockerfile: ./DockerFile.central
+#     depends_on:
+#       - rabbitmq
+
+#   card_reader:
+#     image: card_reader
+#     build:
+#       context: .
+#       dockerfile: ./DockerFile.card_reader
+#     depends_on:
+#       - rabbitmq
+
+#   battery_control:
+#     image: battery_control
+#     build:
+#       context: .
+#       dockerfile: ./DockerFile.battery_control
+#     depends_on:
+#       - rabbitmq
+
+#   control_input:
+#     image: control_input
+#     build:
+#       context: .
+#       dockerfile: ./DockerFile.control_input
+#     depends_on:
+#       - rabbitmq
+
+#   keyboard:
+#     image: keyboard
+#     build:
+#       context: .
+#       dockerfile: ./DockerFile.keyboard
+#     depends_on:
+#       - rabbitmq
+
+#   monitor:
+#     image: monitor
+#     build:
+#       context: .
+#       dockerfile: ./DockerFile.monitor
+#     depends_on:
+#       - rabbitmq
+
+#   nfc:
+#     image: nfc
+#     build:
+#       context: .
+#       dockerfile: ./DockerFile.nfc
+#     depends_on:
+#       - rabbitmq
+
+#   printer:
+#     image: printer
+#     build:
+#       context: .
+#       dockerfile: ./DockerFile.printer
+#     depends_on:
+#       - rabbitmq
+
+#   # virtual_card_data:
+#   #   image: virtual_card_data
+#   #   build:
+#   #     context: .
+#   #     dockerfile: ./DockerFile.virtual_card_data
+#   #   depends_on:
+#   #     - rabbitmq
+
+
+version: '3.7'
 
 services:
-  rabbitmq:
-    image: rabbitmq:management
-    container_name: rabbitmq
-    ports:
-      - "15672:15672"  # RabbitMQ management UI port
-
-  connection:
-    image: connection
+  monitor:
     build:
       context: .
-      dockerfile: ./DockerFile.connection
+      dockerfile: Dockerfile.monitor
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+    # network_mode: "host"
+    ports:
+    - "6005:6005"
     depends_on:
       - rabbitmq
 
   central:
-    image: central
     build:
       context: .
-      dockerfile: ./DockerFile.central
-    depends_on:
-      - rabbitmq
-    
-
- 
-  card_reader:
-    image: card_reader
-    build:
-      context: .
-      dockerfile: ./DockerFile.card_reader
-    depends_on:
-      - rabbitmq
-
-  battery_control:
-    image: battery_control
-    build:
-      context: .
-      dockerfile: ./DockerFile.battery_control
+      dockerfile: Dockerfile.central
+    ports:
+    - "6002:6002"
+    # network_mode: "host"
+    environment:
+      - RABBITMQ_HOST=rabbitmq
     depends_on:
       - rabbitmq
 
   control_input:
-    image: control_input
     build:
       context: .
-      dockerfile: ./DockerFile.control_input
+      dockerfile: Dockerfile.control_input
+    ports:
+    - "6000:6000"
+    # network_mode: "host"
+    environment:
+      - RABBITMQ_HOST=rabbitmq
     depends_on:
       - rabbitmq
+
 
   keyboard:
-    image: keyboard
     build:
       context: .
-      dockerfile: ./DockerFile.keyboard
+      dockerfile: Dockerfile.keyboard
+    ports:
+    - "6003:6003"
+    # network_mode: "host"
+    environment:
+      - RABBITMQ_HOST=rabbitmq
     depends_on:
       - rabbitmq
 
-  monitor:
-    image: monitor
+
+  screen:
     build:
       context: .
-      dockerfile: ./DockerFile.monitor
+      dockerfile: Dockerfile.screen
+    ports:
+    - "6004:6004"
+    environment:
+      - RABBITMQ_HOST=rabbitmq
     depends_on:
       - rabbitmq
+    # network_mode: "host"
 
-  nfc:
-    image: nfc
-    build:
-      context: .
-      dockerfile: ./DockerFile.nfc
-    depends_on:
-      - rabbitmq
-
-  printer:
-    image: printer
-    build:
-      context: .
-      dockerfile: ./DockerFile.printer
-    depends_on:
-      - rabbitmq
-
-  # virtual_card_data:
-  #   image: virtual_card_data
-  #   build:
-  #     context: .
-  #     dockerfile: ./DockerFile.virtual_card_data
-  #   depends_on:
-  #     - rabbitmq
-
-
+  rabbitmq:
+    image: rabbitmq:3.9-management
+    # network_mode: "host"
+    container_name: rabbitmq
+    # environment:
+    #   - RABBITMQ_DEFAULT_USER=guest
+    #   - RABBITMQ_DEFAULT_PASS=guest

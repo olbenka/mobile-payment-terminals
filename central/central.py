@@ -49,18 +49,45 @@
 #     asyncio.run(main())
 
 
+from flask import Flask, request, jsonify
+from producer import send_message
 
-# test
-import asyncio
-import aio_pika
-from ..monitor.api import send_message
-from producer import send_message_secure
-from consumer import consume_messages_secure
+app = Flask(__name__)
 
-async def main():
-    connection = await aio_pika.connect_robust("amqp://guest:guest@127.0.0.1/")
-    await consume_messages_secure(connection)
-    await send_message_secure("Hello from central producer!", "central_to_connection")
+@app.route('/authorize_purchase', methods=['POST'])
+def authorize_purchase():
+    data = request.get_json()
+    amount = data.get('amount')
 
-if __name__ == "__main__":
-    asyncio.run(main())
+    if amount is None or amount <= 0:
+        return jsonify({'status': 'error', 'message': 'Invalid amount'}), 400
+
+    message = {
+        'id': 'authorize_purchase',
+        'details': {
+            'source': 'central',
+            'deliver_to': 'screen',
+            'operation': 'authorize_transaction',
+            'amount': amount
+        }
+    }
+    send_message('security_monitor_queue', message)
+
+    return jsonify({'status': 'success'})
+
+# @app.route('/start_transaction', methods=['POST'])
+# def start_transaction():
+#     message = {
+#         'id': 'start_transaction',
+#         'details': {
+#             'source': 'central',
+#             'deliver_to': 'screen',
+#             'operation': 'start_transaction'
+#         }
+#     }
+#     send_message('security_monitor_queue', message)
+
+#     return jsonify({'status': 'success'})
+
+if __name__ == '__main__':
+    app.run(debug=True)

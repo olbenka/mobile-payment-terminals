@@ -37,7 +37,7 @@
 
 
 import asyncio
-from control_input.api import main as control_input_main
+from control_input.control_input import main as control_input_main
 from battery_control.api import main as battery_main
 
 async def main():

@@ -16,7 +16,7 @@ def check_operation(id, details):
     if src == 'central' and dst == 'printer' and operation == 'print_document':
         authorized = True
 
-    if src == 'central' and dst == 'screen' and operation == 'display_message':
+    if src == 'central' and dst == 'screen' and operation == 'authorize_transaction':
         authorized = True
 
     if src == 'connection' and dst == 'central' and operation == 'receive_message':
@@ -25,16 +25,16 @@ def check_operation(id, details):
     if src == 'connection' and dst == 'virtual' and operation == 'get_info':
         authorized = True
 
-    if src == 'input_control' and dst == 'central' and operation == 'send_data':
+    if src == 'input_control' and dst == 'central' and operation == 'send_keyboard_input':
         authorized = True
 
-    if src == 'battery_control' and dst == 'input_control' and operation == 'send_battery_info':
+    if src == 'battery_control' and dst == 'control_input' and operation == 'send_battery_info':
         authorized = True
 
-    if src == 'keyboard' and dst == 'input_control' and operation == 'send_keyboard_input':
+    if src == 'keyboard' and dst == 'control_input' and operation == 'send_keyboard_input':
         authorized = True
 
-    if src == 'nfc' and dst == 'input_control' and operation == 'send_nfc_data':
+    if src == 'nfc' and dst == 'control_input' and operation == 'send_nfc_data':
         authorized = True
 
     if src == 'virtual' and dst == 'nfc' and operation == 'send_virtual_card_data':

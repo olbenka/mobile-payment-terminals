@@ -1,14 +1,13 @@
-import asyncio
-import aio_pika
+import pika
+import json
 
-async def send_keyboard_input(connection):
-    async with connection:
-        channel = await connection.channel()
-        message = "Hello from keyboard"
+HOST = '127.0.0.1'
 
-        routing_key1 = "keyboard_to_control"
-        await channel.default_exchange.publish(
-            aio_pika.Message(body=message.encode()),
-            routing_key=routing_key1
-        )
-        print(f"LOCAL_LOG: Keyboard input sent: {message}")
+def send_message(routing_key, message):
+    connection = pika.BlockingConnection(pika.ConnectionParameters(HOST))
+    channel = connection.channel()
+
+    # Отправка сообщения в очередь микросервиса
+    channel.basic_publish(exchange='', routing_key=routing_key, body=json.dumps(message))
+
+    connection.close()
