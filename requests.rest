@@ -1,23 +1,20 @@
-### Ввод суммы с клавиатуры (keyboard -> control_input)
-
+### Ввод суммы с клавиатуры (keyboard -> control_input)   
 POST http://localhost:6003/keyboard_data HTTP/1.1
 Content-Type: application/json
-
-{
+ 
+{ 
     "amount": 100
 }
 
 ### Авторизация покупки (control_input -> central)
-
 POST http://localhost:6000/input_data HTTP/1.1
 Content-Type: application/json
 
-{
+{ 
     "amount": 100
-}
+} 
 
 ### Центральный сервис обрабатывает запрос (central -> screen)
-
 POST http://localhost:6002/authorize_purchase HTTP/1.1
 Content-Type: application/json
 
@@ -26,5 +23,4 @@ Content-Type: application/json
 }
 
 ### Демонстрация получения сообщения на screen 
-
-GET http://localhost:6004/ HTTP/1.1
+GET http://localhost:6004/last_transaction HTTP/1.1

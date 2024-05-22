@@ -25,7 +25,7 @@ def check_operation(id, details):
     if src == 'connection' and dst == 'virtual' and operation == 'get_info':
         authorized = True
 
-    if src == 'input_control' and dst == 'central' and operation == 'send_keyboard_input':
+    if src == 'control_input' and dst == 'central' and operation == 'send_keyboard_input':
         authorized = True
 
     if src == 'battery_control' and dst == 'control_input' and operation == 'send_battery_info':

@@ -20,9 +20,10 @@ def input_data():
             'amount': amount
         }
     }
-    send_message('central_queue', message)
+    send_message('security_monitor_queue', message)
+    print(f'[info] Sent message to security_monitor_queue: {message}')
 
     return jsonify({'status': 'success'})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=6000, host="0.0.0.0")

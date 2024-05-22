@@ -2,7 +2,7 @@ import pika
 import json
 from producer import send_message
 
-HOST = '127.0.0.1'
+HOST = 'rabbitmq'
 QUEUE_NAME = 'central_queue'
 
 def on_message(ch, method, properties, body):
@@ -28,11 +28,13 @@ def on_message(ch, method, properties, body):
             }
         }
         send_message('security_monitor_queue', message)
+        print(f'[info] Sent message to security_monitor_queue: {message}')
 
 def main():
     connection = pika.BlockingConnection(pika.ConnectionParameters(HOST))
     channel = connection.channel()
 
+    channel.queue_declare(queue=QUEUE_NAME)
     channel.basic_consume(queue=QUEUE_NAME, on_message_callback=on_message, auto_ack=True)
 
     print('Central is listening...')

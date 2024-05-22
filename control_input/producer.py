@@ -1,7 +1,7 @@
 import pika
 import json
 
-HOST = '127.0.0.1'
+HOST = 'rabbitmq'
 
 def send_message(routing_key, message):
     connection = pika.BlockingConnection(pika.ConnectionParameters(HOST))

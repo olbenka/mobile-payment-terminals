@@ -98,9 +98,6 @@ services:
       dockerfile: Dockerfile.monitor
     environment:
       - RABBITMQ_HOST=rabbitmq
-    # network_mode: "host"
-    ports:
-    - "6005:6005"
     depends_on:
       - rabbitmq
 
@@ -110,7 +107,6 @@ services:
       dockerfile: Dockerfile.central
     ports:
     - "6002:6002"
-    # network_mode: "host"
     environment:
       - RABBITMQ_HOST=rabbitmq
     depends_on:
@@ -122,7 +118,6 @@ services:
       dockerfile: Dockerfile.control_input
     ports:
     - "6000:6000"
-    # network_mode: "host"
     environment:
       - RABBITMQ_HOST=rabbitmq
     depends_on:
@@ -135,7 +130,6 @@ services:
       dockerfile: Dockerfile.keyboard
     ports:
     - "6003:6003"
-    # network_mode: "host"
     environment:
       - RABBITMQ_HOST=rabbitmq
     depends_on:
@@ -150,14 +144,17 @@ services:
     - "6004:6004"
     environment:
       - RABBITMQ_HOST=rabbitmq
+      - REDIS_HOST=redis
     depends_on:
       - rabbitmq
-    # network_mode: "host"
+      - redis
 
   rabbitmq:
     image: rabbitmq:3.9-management
-    # network_mode: "host"
     container_name: rabbitmq
-    # environment:
-    #   - RABBITMQ_DEFAULT_USER=guest
-    #   - RABBITMQ_DEFAULT_PASS=guest
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"

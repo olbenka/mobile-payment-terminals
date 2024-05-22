@@ -2,7 +2,7 @@ import pika
 import json
 from producer import send_message
 
-HOST = '127.0.0.1'
+HOST = 'rabbitmq'
 QUEUE_NAME = 'keyboard_queue'
 
 def on_message(ch, method, properties, body):
@@ -15,7 +15,7 @@ def on_message(ch, method, properties, body):
     amount = details.get('amount')
     print(f"Сумма, введенная с клавиатуры: {amount}")
 
-    # Отправляем сообщение в control_input
+    # Отправляем сообщение в control_input через монитор
     message = {
         'id': 'keyboard_data',
         'details': {
@@ -25,12 +25,13 @@ def on_message(ch, method, properties, body):
             'amount': amount
         }
     }
-    send_message('control_input_queue', message)
+    send_message('security_monitor_queue', message)
 
 def main():
     connection = pika.BlockingConnection(pika.ConnectionParameters(HOST))
     channel = connection.channel()
 
+    channel.queue_declare(queue=QUEUE_NAME)
     channel.basic_consume(queue=QUEUE_NAME, on_message_callback=on_message, auto_ack=True)
 
     print('Keyboard is listening...')

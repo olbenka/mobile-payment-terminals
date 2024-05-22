@@ -21,11 +21,12 @@ def keyboard_data():
         }
     }
     try:
-        send_message('control_input_queue', message)
+        send_message('security_monitor_queue', message)
+        print(f'[info] Sent message to security_monitor_queue: {message}')
     except Exception as e:
         return jsonify({'status': 'error', 'message': f'Error sending message: {e}'}), 500
 
     return jsonify({'status': 'success'})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=6003, host="0.0.0.0")

@@ -1,22 +1,19 @@
-from flask import Flask, jsonify
-from producer import send_message
+from flask import Flask, request, jsonify
+import json
+import redis
 
 app = Flask(__name__)
 
-# @app.route('/transaction_status', methods=['GET'])
-# def get_transaction_status():
-#     # Отправка запроса на статус транзакции
-#     message = {
-#         'id': 'get_transaction_status',
-#         'details': {
-#             'source': 'screen',
-#             'deliver_to': 'central',
-#             'operation': 'get_transaction_status'
-#         }
-#     }
-#     send_message('central_queue', message)
+REDIS_HOST = 'redis'
+r = redis.Redis(host=REDIS_HOST, port=6379, db=0)
 
-#     return jsonify({'status': 'success', 'message': 'Транзакция одобрена'})
+@app.route('/last_transaction', methods=['GET'])
+def last_transaction():
+    messages = r.lrange('messages', 0, -1)
+    print(f'[info] Current messages in last_transaction: {messages}')
+    if not messages:
+        return jsonify({'status': 'error', 'message': 'No transactions available'}), 404
+    return jsonify(json.loads(messages[-1]))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=6004, host="0.0.0.0")

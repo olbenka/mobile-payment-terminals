@@ -1,3 +1,5 @@
+# Dockerfile.screen
+
 FROM python:3.9
 
 # Keeps Python from generating .pyc files in the container
@@ -6,7 +8,6 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED=1
 
-
 COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
@@ -14,5 +15,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY screen /screen
 WORKDIR /screen
 
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-CMD ["python3", "screen.py"]
+CMD ["/entrypoint.sh"]
