@@ -99,8 +99,6 @@ services:
     environment:
       - RABBITMQ_HOST=rabbitmq
     # network_mode: "host"
-    ports:
-    - "6005:6005"
     depends_on:
       - rabbitmq
 

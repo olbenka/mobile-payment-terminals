@@ -5,7 +5,7 @@
 
 # async def send_message(message, routing_key):
 #     connection = await aio_pika.connect_robust(
-#         "amqp://guest:guest@127.0.0.1/",
+#         "amqp://guest:guest@rabbitmq/",
 #     )
 #     # print(routing_key)
 
@@ -34,7 +34,7 @@
 
 # async def send_message(message, routing_key):
 #     connection = await aio_pika.connect_robust(
-#         "amqp://guest:guest@127.0.0.1/",
+#         "amqp://guest:guest@rabbitmq/",
 #     )
 
 #     async with connection:
@@ -81,7 +81,7 @@
 import pika
 import json
 
-HOST = '127.0.0.1'
+HOST = 'rabbitmq'
 
 def send_message(routing_key, message):
     connection = pika.BlockingConnection(pika.ConnectionParameters(HOST))

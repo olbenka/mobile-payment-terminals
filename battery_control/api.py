@@ -4,7 +4,7 @@ from producer import send_battery_info
 
 async def main():
     connection = await aio_pika.connect_robust(
-        "amqp://guest:guest@127.0.0.1/",
+        "amqp://guest:guest@rabbitmq/",
     )
     routing_key = "battery_to_control"
     await send_battery_info(connection, routing_key)

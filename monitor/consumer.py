@@ -31,10 +31,9 @@
 
 import pika
 import json
-import base64
 from policies import check_operation, check_payload_seal
 
-HOST = '127.0.0.1'
+HOST = 'rabbitmq'
 QUEUE_NAME = 'security_monitor_queue'
 
 def on_message(ch, method, properties, body):

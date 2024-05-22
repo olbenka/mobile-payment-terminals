@@ -4,7 +4,7 @@ from consumer import consume_messages_printer
 
 async def main():
     connection = await aio_pika.connect_robust(
-        "amqp://guest:guest@127.0.0.1/",
+        "amqp://guest:guest@rabbitmq/",
     )
     await consume_messages_printer(connection)
     # await asyncio.sleep(200)

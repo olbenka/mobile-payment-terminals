@@ -2,7 +2,7 @@ import pika
 import json
 
 # Настройки RabbitMQ
-HOST = '127.0.0.1'
+HOST = 'rabbitmq'
 QUEUE_NAME = 'security_monitor_queue'
 
 def send_message(message):

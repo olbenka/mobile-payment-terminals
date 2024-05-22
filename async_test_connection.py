@@ -11,7 +11,7 @@ import aio_pika
 async def main() -> None:
     logging.basicConfig(level=logging.INFO)
     connection = await aio_pika.connect_robust(
-        "amqp://guest:guest@127.0.0.1/",
+        "amqp://guest:guest@rabbitmq/",
     )
 
     queue_name = "test_queue"

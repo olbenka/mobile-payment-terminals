@@ -5,7 +5,7 @@ from consumer import consume_nfc_input
 
 async def main():
     connection = await aio_pika.connect_robust(
-        "amqp://guest:guest@127.0.0.1/",
+        "amqp://guest:guest@rabbitmq/",
     )
     routing_key = "nfc_to_control"
     await send_message("Hello from nfc producer!", routing_key) #отправка в контроль

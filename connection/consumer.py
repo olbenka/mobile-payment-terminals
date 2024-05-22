@@ -17,7 +17,7 @@
 
 # async def main():
 #     connection = await aio_pika.connect_robust(
-#         "amqp://guest:guest@127.0.0.1/",
+#         "amqp://guest:guest@rabbitmq/",
 #     )
 #     await consume_messages(connection)
 

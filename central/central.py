@@ -7,7 +7,7 @@
 
 # async def main():
 #     connection = await aio_pika.connect_robust(
-#         "amqp://guest:guest@127.0.0.1/",
+#         "amqp://guest:guest@rabbitmq/",
 #     )
 #     routing = "central_to_connection"
 #     # await send_message("Hello from central producer!", routing)
@@ -90,4 +90,4 @@ def authorize_purchase():
 #     return jsonify({'status': 'success'})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=6002, host="0.0.0.0")

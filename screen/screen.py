@@ -19,4 +19,4 @@ app = Flask(__name__)
 #     return jsonify({'status': 'success', 'message': 'Транзакция одобрена'})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=6004, host="0.0.0.0")

@@ -4,7 +4,7 @@ import aio_pika
 #тут мы отправляем данные из nfc в контроль ввода
 async def send_message(message, routing_key):
     connection = await aio_pika.connect_robust(
-        "amqp://guest:guest@127.0.0.1/",
+        "amqp://guest:guest@rabbitmq/",
     )
 
     async with connection:

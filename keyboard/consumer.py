@@ -2,7 +2,7 @@ import pika
 import json
 from producer import send_message
 
-HOST = '127.0.0.1'
+HOST = 'rabbitmq'
 QUEUE_NAME = 'keyboard_queue'
 
 def on_message(ch, method, properties, body):
